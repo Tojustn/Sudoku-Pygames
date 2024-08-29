@@ -1,6 +1,6 @@
 # Sudoku-Pygames
 
-This is a Sudoku game that uses the same logic as my other suduoku program but implemented using the Pygame library. It features a graphical interface where users can interact with the Sudoku board by selecting cells and entering numbers. The game enforces Sudoku rules, ensuring that each number is valid within the board's constraints. Pressing space will automatically solve the board
+This is a Sudoku game that uses the same logic as my other suduoku program but implemented using the Pygame library. It features a graphical interface where users can interact with the Sudoku board by selecting cells and entering numbers. The game enforces Sudoku rules, ensuring that each number is valid within the board's constraints. Pressing space will automatically solve the board.
 
 ## Features
 - **One solution**: Uses backtracking in order to check how many solutions the board has 
@@ -10,6 +10,7 @@ This is a Sudoku game that uses the same logic as my other suduoku program but i
 - **Highlighting**: Highlights selected squares to enhance the user experience.
 - **Solver**: Space will automatically solve the puzzle
 - **Win Checker**: Checks if the player wins and displays message
+- **Difficulty Selector**: User can change their difficulty by pressing E(easy) M(medium) or H(hard)
 
 ## How to Play
 
