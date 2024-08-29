@@ -14,6 +14,10 @@ BLACK = (0,0,0)
 RED = (255,0,0)
 YELLOW = (0,255,255)
 FPS = 60
+
+srow = pygame.Surface((800,70))
+scol = pygame.Surface((70,800))
+
 square = []
 game = sudoku.Sudoku()
 game.generate_numbers()
@@ -26,7 +30,9 @@ def draw_window():
     WIN.fill(WHITE)
     draw_grid()
     draw_number()
-
+    row,col = get_square()
+    WIN.blit(srow, (0,col*70+15))
+    WIN.blit(scol, (row*70+15,0))
     # pygame.display.update always at bottom
     pygame.display.update()
 
@@ -68,36 +74,36 @@ def get_square():
     return  position_list
 
 # Shows user the row and column they chose
-def click_display(row,col):
-    block_size = 70
-    srow = pygame.Surface((800,block_size))
-    scol = pygame.Surface((block_size,800))    
+def click_display():  
     srow.set_alpha(50) 
     scol.set_alpha(50)              
     srow.fill(RED)
     scol.fill(RED)          
-    WIN.blit(srow, (0,col*70+15))
-    WIN.blit(scol, (row*70+15,0))
-    pygame.display.update()
-    time.sleep(.2)
+
+
 def main():
     # Define clock object
     clock = pygame.time.Clock()
     run = True
     while run == True:
-        down = False
-        # Implements FPS in run
         clock.tick(FPS)
+        square = get_square()
+        
+        srow.set_alpha(0)
+        scol.set_alpha(0)
+        # Implements FPS in run
         # For everything that happens
         for event in pygame.event.get():
-            
+            row,col = get_square()
+            WIN.blit(srow, (0,col*70+15))
+            WIN.blit(scol, (row*70+15,0))
             # If user quit program
             if event.type == pygame.QUIT:
                 #End run
                 run =  False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                square = get_square()
-                click_display(square[0],square[1])
+            if event.type == pygame.MOUSEMOTION:
+                click_display()
+        
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
                     if game.valid_move(1, square[0], square[1]):
@@ -126,7 +132,7 @@ def main():
                 elif event.key == pygame.K_9:
                     if game.valid_move(9, square[0], square[1]):
                         game.board[square[0]][square[1]] = 9
-                if game.check_win():
+                if game.check_win(number_grid):
                     win_text = font.render("WIN!!!!!!!!!!!",True,YELLOW)
                     WIN.blit(win_text,330,330)
 

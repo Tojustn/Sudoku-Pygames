@@ -1,8 +1,7 @@
 import time
 import random
 import copy
-# From color python file import color class
-from color import color
+
 
 class Sudoku:
     def __init__(self):
