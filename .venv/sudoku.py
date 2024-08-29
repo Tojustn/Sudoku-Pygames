@@ -204,17 +204,13 @@ class Sudoku:
         return True
 
 
-    def get_difficulty(self):
-        try:
-            diff = input("What difficulty do you want (easy/medium/hard)? ").lower()
-            if diff not in ["easy", "medium", "hard"]:
-                raise ValueError
-            if diff == "easy":
-                return 1
-            elif diff == "medium":
-                return 3
-            else:
-                return 5
-        except ValueError:
-            print("Invalid input. Please type easy, medium, or hard.")
-            return self.get_difficulty()
+    def get_difficulty(self,diff):
+        if diff not in ["easy", "medium", "hard"]:
+            raise ValueError
+        if diff == "easy":
+            return 1
+        elif diff == "medium":
+            return 3
+        else:
+            return 5
+

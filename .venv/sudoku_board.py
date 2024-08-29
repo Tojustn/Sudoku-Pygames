@@ -5,7 +5,7 @@ import time
 
 
 pygame.init()
-WIDTH, HEIGHT = 660, 660
+WIDTH, HEIGHT = 660, 760
 # Makes a window with WIDTH, HEIGHT
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -23,8 +23,6 @@ down = False
 win = False
 square = []
 game = sudoku.Sudoku()
-game.generate_numbers()
-game.remove_nums(6)
 number_grid = game.board
 square_pos = {}
 font = pygame.font.SysFont(None,size=50)
@@ -34,9 +32,9 @@ def draw_window():
     draw_grid()
     draw_number()
     row,col = get_square()
-    WIN.blit(srow, (0,col*70+15))
-    WIN.blit(scol, (row*70+15,0))
-
+    if not row > 9 or not col >9:
+        WIN.blit(srow, (0,col*70+15))
+        WIN.blit(scol, (row*70+15,0))
     if down:
         num_highlight()
     if win:
@@ -68,7 +66,7 @@ def draw_grid():
     block_size = 70
     # Draws the inner grid rectangles
     for x in range(0,WIDTH-30,block_size):
-        for y in range(0,HEIGHT-30,block_size):
+        for y in range(0,660-30,block_size):
             rect = pygame.Rect(x+15, y+15, block_size, block_size)
             pygame.draw.rect(WIN, BLACK, rect, 1)
 
@@ -80,12 +78,15 @@ def draw_grid():
             pygame.draw.rect(WIN, BLACK, rect, 4)
 def get_square():
     position = pygame.mouse.get_pos()
+    if(position[1] > 630):
+        return [1000,1000]
     position_list = []
     position_list = list(map(lambda x: x//70,position))
     return  position_list
 
 # Shows user the row and column they chose
-def click_display():  
+def click_display():
+    
     srow.set_alpha(50) 
     scol.set_alpha(50)              
     srow.fill(RED)
@@ -112,6 +113,10 @@ def main():
         # Implements FPS in run
         # For everything that happens
         for event in pygame.event.get():
+            if game.check_win(number_grid):
+                    win = True
+            else:
+                win = False
             row,col = get_square()
             WIN.blit(srow, (0,col*70+15))
             WIN.blit(scol, (row*70+15,0))
@@ -128,6 +133,15 @@ def main():
             if down:
                 num_highlight()
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_e:
+                    game.generate_numbers()
+                    game.remove_nums(1)
+                if event.key == pygame.K_m:
+                    game.generate_numbers()
+                    game.remove_nums(3)
+                if event.key == pygame.K_h:
+                    game.generate_numbers()
+                    game.remove_nums(5)
                 if event.key == pygame.K_1:
                     if game.valid_move(1, square[0], square[1]):
                         game.board[square[0]][square[1]] = 1
@@ -158,8 +172,6 @@ def main():
                 elif event.key == pygame.K_SPACE:
                     game.solve()
                     draw_number()
-                if game.check_win(number_grid):
-                    win = True
 
         # Constantly draws graph
         draw_window()
