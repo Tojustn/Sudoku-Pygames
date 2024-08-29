@@ -125,14 +125,19 @@ def main():
                 #End run
                 run =  False
             if event.type == pygame.MOUSEMOTION:
+                # If user moves mouse display transparent rectangles
                 click_display()
             if event.type == pygame.MOUSEBUTTONDOWN:
+                # Highlights the square the user clicked on 
                 down = True
             if event.type == pygame.MOUSEBUTTONUP:
+                # Unhighlights the square the user clicked
                 down = False
             if down:
                 num_highlight()
+            
             if event.type == pygame.KEYDOWN:
+                # Difficulty changer based on keypressed
                 if event.key == pygame.K_e:
                     game.generate_numbers()
                     game.remove_nums(1)
@@ -142,6 +147,7 @@ def main():
                 if event.key == pygame.K_h:
                     game.generate_numbers()
                     game.remove_nums(5)
+                # Inserts numbers into sudoku board
                 if event.key == pygame.K_1:
                     if game.valid_move(1, square[0], square[1]):
                         game.board[square[0]][square[1]] = 1
