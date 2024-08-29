@@ -67,6 +67,24 @@ class Sudoku:
         # print(f"{self.num_solutions} found")
         # Instead of return True, return False allows program to keep exploring multiple solutions
         return True
+    def solve(self):
+        for r in range(0,9):
+            for c in range(0,9):
+                if self.board_copy[r][c] == " ":
+                    for i in range(1,10):
+                        self.board_copy[r][c] = i
+                        self.board[r][c] = i
+                        # Checks if the number is not a dupe
+                        if self.is_dup(self.board_copy,r, c):
+                            # Continue with the next cell
+                            if self.solve():
+                                return True
+                        
+                        # Undo the move (backtrack)
+                        self.board_copy[r][c] = " "
+                        self.board[r][c] = " "
+                    return False
+        return True
 
             
 

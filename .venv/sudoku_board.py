@@ -8,16 +8,19 @@ pygame.init()
 WIDTH, HEIGHT = 660, 660
 # Makes a window with WIDTH, HEIGHT
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+
 pygame.display.set_caption("Sudoku")
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 RED = (255,0,0)
-YELLOW = (0,255,255)
+YELLOW = (255,255,0)
+CYAN = (0,255,255)
 FPS = 60
-
 srow = pygame.Surface((800,70))
 scol = pygame.Surface((70,800))
 
+down = False
+win = False
 square = []
 game = sudoku.Sudoku()
 game.generate_numbers()
@@ -33,6 +36,14 @@ def draw_window():
     row,col = get_square()
     WIN.blit(srow, (0,col*70+15))
     WIN.blit(scol, (row*70+15,0))
+
+    if down:
+        num_highlight()
+    if win:
+        win_text = font.render("WIN!!!!!!!!!!!",True,BLACK)
+        win_rect = pygame.Rect(240,300,250,80)
+        pygame.draw.rect(WIN, CYAN, win_rect)
+        WIN.blit(win_text,(270,330))
     # pygame.display.update always at bottom
     pygame.display.update()
 
@@ -79,7 +90,13 @@ def click_display():
     scol.set_alpha(50)              
     srow.fill(RED)
     scol.fill(RED)          
-
+def num_highlight():
+    block_size = 70
+    row, col = get_square()
+    if row < 9 and col > -1 and col <9 and row > -1 and game.valid_move(1,row,col):
+        highlight_rect = pygame.Rect(row*70+15, col*70+15,block_size,block_size)
+        pygame.draw.rect(WIN, YELLOW,highlight_rect,9)
+    
 
 def main():
     # Define clock object
@@ -88,7 +105,8 @@ def main():
     while run == True:
         clock.tick(FPS)
         square = get_square()
-        
+        global win
+        global down
         srow.set_alpha(0)
         scol.set_alpha(0)
         # Implements FPS in run
@@ -103,7 +121,12 @@ def main():
                 run =  False
             if event.type == pygame.MOUSEMOTION:
                 click_display()
-        
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                down = True
+            if event.type == pygame.MOUSEBUTTONUP:
+                down = False
+            if down:
+                num_highlight()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
                     if game.valid_move(1, square[0], square[1]):
@@ -132,9 +155,11 @@ def main():
                 elif event.key == pygame.K_9:
                     if game.valid_move(9, square[0], square[1]):
                         game.board[square[0]][square[1]] = 9
+                elif event.key == pygame.K_SPACE:
+                    game.solve()
+                    draw_number()
                 if game.check_win(number_grid):
-                    win_text = font.render("WIN!!!!!!!!!!!",True,YELLOW)
-                    WIN.blit(win_text,330,330)
+                    win = True
 
         # Constantly draws graph
         draw_window()

@@ -11,7 +11,7 @@ This is a Sudoku game that uses the same logic as my other suduoku program but i
 
 ## How to Play
 
-1. **Select a Square**: Click on a square in the grid to select it. The selected square will be highlighted.
+1. **Select a Square**: Click on a square in the grid to select it. *The selected square will be highlighted. (Currently implementing)*
 2. **Enter a Number**: Press a number key (1-9) to input a number into the selected square. The game will check if the move is valid.
 3. **Quit**: Close the game window or press the escape key to exit.
 
