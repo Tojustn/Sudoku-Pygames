@@ -23,6 +23,7 @@ This is a Sudoku game that uses the same logic as my other suduoku program but i
     - **Keyboard**: Press numbers (1-9) to input them into the selected cell.
     - **Spacebar**: Automatically solve the puzzle.
     - **Esc/Close**: Exit the game.
+    - **DIfficulty**: Press E or M or H to change difficulty
 
 ## Installation
 
