@@ -19,6 +19,7 @@ FPS = 60
 srow = pygame.Surface((800,70))
 scol = pygame.Surface((70,800))
 
+current_diff = ""
 down = False
 win = False
 square = []
@@ -42,6 +43,18 @@ def draw_window():
         win_rect = pygame.Rect(240,300,250,80)
         pygame.draw.rect(WIN, CYAN, win_rect)
         WIN.blit(win_text,(270,330))
+    if current_diff == "e":
+        e_text = font.render("EASY DIFF",True,BLACK)
+        WIN.blit(e_text,(660,330))
+        #print("EASY")
+    elif current_diff == "m":
+        m_text = font.render("MEDIUM DIFF", True, BLACK)
+        WIN.blit(m_text,(660,330))
+        #print("MEDIUM")
+    else:
+        h_text = font.render("HIGH DIFF", True, BLACK)
+        WIN.blit(h_text,(660,330))
+        #print("HARD")
     # pygame.display.update always at bottom
     pygame.display.update()
 
@@ -72,8 +85,8 @@ def draw_grid():
 
     #Draws the edge of each rectangle
     block_size = 210
-    for x in range(0,WIDTH-30,block_size):
-        for y in range(0,HEIGHT-30,block_size):
+    for x in range(0,660-30,block_size):
+        for y in range(0,660-30,block_size):
             rect = pygame.Rect(x+15, y+15, block_size, block_size)
             pygame.draw.rect(WIN, BLACK, rect, 4)
 def get_square():
@@ -100,6 +113,7 @@ def num_highlight():
     
 
 def main():
+    global current_diff
     # Define clock object
     clock = pygame.time.Clock()
     run = True
@@ -141,12 +155,18 @@ def main():
                 if event.key == pygame.K_e:
                     game.generate_numbers()
                     game.remove_nums(1)
+                    current_diff = "e"
+                    #print("EASY")
                 if event.key == pygame.K_m:
                     game.generate_numbers()
                     game.remove_nums(3)
+                    current_diff = "m"
+                    #print("MEDIUM")
                 if event.key == pygame.K_h:
                     game.generate_numbers()
                     game.remove_nums(5)
+                    current_diff = "h"
+                    #print("HARD")
                 # Inserts numbers into sudoku board
                 if event.key == pygame.K_1:
                     if game.valid_move(1, square[0], square[1]):
