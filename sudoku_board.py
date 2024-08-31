@@ -155,6 +155,7 @@ def main():
                 if event.key == pygame.K_e:
                     game.generate_numbers()
                     try:
+                        game.num_solutions = 0
                         game.remove_nums(1)
                         game.check_multiple_solutions
                         if game.num_solutions != 1:
