@@ -2,7 +2,7 @@ import pygame
 import unittest
 import sudoku
 import time
-
+from error import MultipleSolutionError
 
 pygame.init()
 WIDTH, HEIGHT = 660, 760
@@ -154,17 +154,35 @@ def main():
                 # Difficulty changer based on keypressed
                 if event.key == pygame.K_e:
                     game.generate_numbers()
-                    game.remove_nums(1)
+                    try:
+                        game.remove_nums(1)
+                        game.check_multiple_solutions
+                        if game.num_solutions != 1:
+                            raise MultipleSolutionError
+                    except MultipleSolutionError:
+                        pass
                     current_diff = "e"
                     #print("EASY")
                 if event.key == pygame.K_m:
                     game.generate_numbers()
-                    game.remove_nums(3)
+                    try:
+                        game.remove_nums(3)
+                        game.check_multiple_solutions
+                        if game.num_solutions != 1:
+                            raise MultipleSolutionError
+                    except MultipleSolutionError:
+                        pass
                     current_diff = "m"
                     #print("MEDIUM")
                 if event.key == pygame.K_h:
                     game.generate_numbers()
-                    game.remove_nums(5)
+                    try:
+                        game.remove_nums(5)
+                        game.check_multiple_solutions
+                        if game.num_solutions != 1:
+                            raise MultipleSolutionError
+                    except MultipleSolutionError:
+                        pass
                     current_diff = "h"
                     #print("HARD")
                 # Inserts numbers into sudoku board

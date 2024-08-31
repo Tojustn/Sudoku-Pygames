@@ -1,0 +1,2 @@
+class MultipleSolutionError(Exception):
+    pass
