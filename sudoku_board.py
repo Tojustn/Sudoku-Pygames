@@ -3,7 +3,6 @@ import unittest
 import sudoku
 import time
 from error import MultipleSolutionError
-
 pygame.init()
 WIDTH, HEIGHT = 660, 760
 # Makes a window with WIDTH, HEIGHT
@@ -167,7 +166,7 @@ def main():
                 if event.key == pygame.K_m:
                     game.generate_numbers()
                     try:
-                        game.remove_nums(3)
+                        game.remove_nums(5)
                         game.check_multiple_solutions
                         if game.num_solutions != 1:
                             raise MultipleSolutionError
@@ -178,7 +177,7 @@ def main():
                 if event.key == pygame.K_h:
                     game.generate_numbers()
                     try:
-                        game.remove_nums(5)
+                        game.remove_nums(7)
                         game.check_multiple_solutions
                         if game.num_solutions != 1:
                             raise MultipleSolutionError

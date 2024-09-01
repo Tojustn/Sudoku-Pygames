@@ -1,6 +1,7 @@
 import time
 import random
 import copy
+from error import BoardError
 
 
 class Sudoku:
@@ -33,18 +34,24 @@ class Sudoku:
                     return False
         self.solution_board = copy.deepcopy(self.board)
         return True
-
+        
     # Removes numbers from the board
     def remove_nums(self,diff: int):
-        for row in self.board:
-            numbers = list(range(1,10))
-            random.shuffle(numbers)
-            # Number of missing numbers
-            for i in range(diff):
-                numbers.pop(0)
-            for col, spot in enumerate(row):
-                if not spot in numbers:
-                    row[col] = " "
+        try:
+            for row in self.board:
+                numbers = list(range(1,10))
+                random.shuffle(numbers)
+                # Number of missing numbers
+                for i in range(diff):
+                    numbers.pop(0)
+                for col, spot in enumerate(row):
+                    if not spot in numbers:
+                        row[col] = " "
+
+                if diff > 4 and not self.check_all_squares(self.board_copy):
+                    raise BoardError
+        except BoardError:
+            pass
             self.board_copy = copy.deepcopy(self.board)
     # Makes sure there is only one solution using naive backtracking
     def check_multiple_solutions(self):
@@ -66,7 +73,7 @@ class Sudoku:
         self.num_solutions += 1
         # print(f"{self.num_solutions} found")
         # Instead of return True, return False allows program to keep exploring multiple solutions
-        return False
+        return True
     def solve(self):
         for r in range(0,9):
             for c in range(0,9):
@@ -86,7 +93,6 @@ class Sudoku:
                     return False
         return True
 
-            
 
 
     # Checks for dups either in rows or columns or square
@@ -115,9 +121,7 @@ class Sudoku:
             if sorted_col[i] == sorted_col[i+1]:
                 #print("Theres a dupe in cols")
                 return False
-                
-        #print("Col pass")
-        # Checks squares
+
         board_copy = board
         start_row = int(comrow) / 3
         start_col = int(comcol) / 3
@@ -142,8 +146,6 @@ class Sudoku:
                 
         #print("Square pass")
         return True
-        
-
         
     # Checks if sudoku has been completed
     def check_win(self,board):
@@ -174,9 +176,16 @@ class Sudoku:
             for i in range(len(sorted_col)-1):
                 if sorted_col[i] == sorted_col[i+1] or sorted_col[i] == " " or sorted_col[i+1] == " ":
                     return False
-
+        square_check = self.check_all_squares(board)
+        if row_check and col_check and square_check:
+            return True
+        else:
+            return False
                     
         # Finally check individual squares
+        
+    # Places the users move into the board
+    def check_all_squares(self,board):
         board_copy = board
         square_check = True
         for square in range(9):
@@ -192,12 +201,9 @@ class Sudoku:
                         return False
             square_nums.clear()
             sorted_square.clear()
-        if row_check and col_check and square_check:
-            return True
-        else:
-            return False
-    # Places the users move into the board
-    
+        return True
+        
+
     def valid_move(self,num,row,col):
         if self.board_copy[int(row)][int(col)] != " ":
             return False
