@@ -47,9 +47,9 @@ class Sudoku:
                 for col, spot in enumerate(row):
                     if not spot in numbers:
                         row[col] = " "
-
                 if diff > 4 and not self.check_all_squares(self.board_copy):
                     raise BoardError
+            self.board_copy = copy.deepcopy(self.board)
         except BoardError:
             pass
             self.board_copy = copy.deepcopy(self.board)
